@@ -67,8 +67,26 @@ public class KotlinCoroutineTest {
         new NativeObfuscator().process(inputJar, out,
                 Arrays.asList(stdlib, coroutines),
                 Collections.emptyList(),
-                Collections.singletonList("Rep*"),
+                // A bare class name only whitelists the class; the methods need
+                // the "class#name!descriptor" entry. Both lines are required,
+                // otherwise the class is emitted with no native methods at all.
+                Arrays.asList("Rep", "Rep#**!**"),
                 "native_library", null, Platform.HOTSPOT, true, true);
+
+        // Guard: a whitelist that matches no methods silently produces an empty
+        // class and the test would just run plain JVM twice.
+        Path repCpp;
+        try (Stream<Path> cpps = Files.find(cpp, 3,
+                (p, a) -> Files.isRegularFile(p) && p.getFileName().toString().equals("Rep_0.cpp"))) {
+            repCpp = cpps.findFirst().orElseThrow(() ->
+                    new IllegalStateException("Rep_0.cpp was not generated in " + cpp));
+        }
+        String generated = new String(Files.readAllBytes(repCpp), java.nio.charset.StandardCharsets.UTF_8);
+        for (String expected : Arrays.asList("__ngen_native_one", "__ngen_native_two", "__ngen_native_three")) {
+            if (!generated.contains(expected)) {
+                throw new IllegalStateException(expected + " missing: the suspend functions were not transpiled");
+            }
+        }
 
         ProcessHelper.run(cpp, 300_000, Arrays.asList("cmake", ".")).check("CMake prepare");
         ProcessHelper.run(cpp, 900_000, Arrays.asList("cmake", "--build", ".", "--config", "Release"))
