@@ -50,22 +50,39 @@ jobs:
             --tests 'by.radioegor146.TestsGenerator' \
             --tests 'by.radioegor146.KotlinCoroutineTest' 2>&1 | tee "$RUNNER_TEMP/test.log"
 
-      # Job logs are not downloadable without a token, so on failure the
-      # interesting part is committed back to the branch instead.
-      - name: Publish failure log to repo
-        if: failure()
+      # Guard against a green run where the filter matched nothing.
+      - name: Assert the coroutine test actually ran
+        run: |
+          ls -l obfuscator/build/test-results/test/ || true
+          test -f obfuscator/build/test-results/test/TEST-by.radioegor146.KotlinCoroutineTest.xml
+
+      # Job logs are not downloadable without a token, so the test XML summary
+      # (test counts + captured stdout/stderr) is committed back to the branch.
+      - name: Publish run summary to repo
+        if: always()
         run: |
           mkdir -p ci
           {
             echo "run: $GITHUB_RUN_ID"
             echo "sha: $GITHUB_SHA"
             echo
-            tail -c 40000 "$RUNNER_TEMP/test.log"
-          } > ci/last-failure.txt
+            found=0
+            for f in obfuscator/build/test-results/test/*.xml; do
+              [ -e "$f" ] || continue
+              found=1
+              echo "== $(basename "$f")"
+              grep -o '<testsuite [^>]*>' "$f" | head -1
+              sed -n '/<system-out>/,/<\/system-out>/p' "$f" | head -80
+              echo
+            done
+            if [ "$found" = 0 ]; then
+              echo "NO TEST RESULT XML FOUND - the suite did not run"
+            fi
+          } > ci/last-run.txt
           git config user.name "ci-bot"
           git config user.email "ci-bot@users.noreply.github.com"
-          git add ci/last-failure.txt
-          git commit -m "ci: record coroutine repro failure [skip ci]" || exit 0
+          git add ci/last-run.txt
+          git commit -m "ci: record run $GITHUB_RUN_ID [skip ci]" || exit 0
           git push
 
       - name: Upload test reports
