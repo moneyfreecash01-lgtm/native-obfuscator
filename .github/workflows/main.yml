@@ -1,5 +1,8 @@
 name: Main pipeline
-on: [push]
+# Full cross-platform matrix: expensive (15 jobs). Run manually instead of on
+# every push; the Coroutine repro workflow is the one that runs per push.
+on:
+  workflow_dispatch:
 jobs:
   build:
     strategy:
