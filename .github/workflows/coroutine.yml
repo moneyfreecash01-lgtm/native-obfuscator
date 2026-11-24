@@ -48,13 +48,15 @@ jobs:
           set -o pipefail
           ./gradlew :obfuscator:test --console=plain \
             --tests 'by.radioegor146.TestsGenerator' \
-            --tests 'by.radioegor146.KotlinCoroutineTest' 2>&1 | tee "$RUNNER_TEMP/test.log"
+            --tests 'by.radioegor146.KotlinCoroutineTest' \
+            --tests 'by.radioegor146.WrappingArithmeticTest' 2>&1 | tee "$RUNNER_TEMP/test.log"
 
       # Guard against a green run where the filter matched nothing.
       - name: Assert the coroutine test actually ran
         run: |
           ls -l obfuscator/build/test-results/test/ || true
           test -f obfuscator/build/test-results/test/TEST-by.radioegor146.KotlinCoroutineTest.xml
+          test -f obfuscator/build/test-results/test/TEST-by.radioegor146.WrappingArithmeticTest.xml
 
       # Job logs are not downloadable without a token, so the test XML summary
       # (test counts + captured stdout/stderr) is committed back to the branch.

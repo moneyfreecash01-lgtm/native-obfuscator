@@ -28,6 +28,13 @@ endif()
 find_package(JNI REQUIRED)
 include_directories(${JNI_INCLUDE_DIRS})
 
+# JVM int/long arithmetic wraps on overflow; signed C++ overflow is UB, so
+# clang/gcc may legitimately fold `x + Integer.MIN_VALUE` into `x` when it can
+# prove x < 0. Kotlin coroutine state machines do exactly that on resume.
+if (NOT MSVC)
+    add_compile_options(-fwrapv)
+endif()
+
 set(CLASS_FILES $classfiles)
 set(MAIN_FILES $mainfiles)
 add_definitions($definitions)
