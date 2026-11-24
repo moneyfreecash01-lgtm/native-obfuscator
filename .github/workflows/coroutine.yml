@@ -46,7 +46,9 @@ jobs:
           NOB_ALLOWED_TESTS: ${{ github.event.inputs.allowed_tests || 'CoroutineResume' }}
         run: |
           set -o pipefail
-          ./gradlew :obfuscator:test --console=plain --tests 'by.radioegor146.TestsGenerator' 2>&1 | tee "$RUNNER_TEMP/test.log"
+          ./gradlew :obfuscator:test --console=plain \
+            --tests 'by.radioegor146.TestsGenerator' \
+            --tests 'by.radioegor146.KotlinCoroutineTest' 2>&1 | tee "$RUNNER_TEMP/test.log"
 
       # Job logs are not downloadable without a token, so on failure the
       # interesting part is committed back to the branch instead.

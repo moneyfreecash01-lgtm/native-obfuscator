@@ -46,6 +46,11 @@ dependencies {
     // predates that requirement: without this the test worker dies with
     // "Failed to load JUnit Platform".
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+
+    // Used by KotlinCoroutineTest: a prebuilt Kotlin repro is transpiled and
+    // then run against these, so they must be resolvable at test runtime.
+    testImplementation 'org.jetbrains.kotlin:kotlin-stdlib:2.2.10'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.9.0'
 }
 
 shadowJar {
