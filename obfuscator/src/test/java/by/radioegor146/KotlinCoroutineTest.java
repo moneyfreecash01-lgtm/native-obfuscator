@@ -71,7 +71,11 @@ public class KotlinCoroutineTest {
                 // the "class#name!descriptor" entry. Both lines are required,
                 // otherwise the class is emitted with no native methods at all.
                 Arrays.asList("Rep", "Rep#**!**"),
-                "native_library", null, Platform.HOTSPOT, true, true);
+                "native_library", null, Platform.HOTSPOT,
+                // useAnnotations must stay false: the pipeline invokes the CLI
+                // without -a, and with annotations enabled unannotated classes
+                // are skipped even when they are whitelisted.
+                false, true);
 
         // Guard: a whitelist that matches no methods silently produces an empty
         // class and the test would just run plain JVM twice.
