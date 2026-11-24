@@ -17,10 +17,11 @@ import java.util.stream.Stream;
 
 public class TestsGenerator {
 
-    private final static List<String> ALLOWED_TESTS = null; /*
-    private final static List<String> ALLOWED_TESTS = Arrays.asList(
-            "EmptyTest1"
-    ); // */
+    // Filter the dynamic test list with NOB_ALLOWED_TESTS (comma separated
+    // substrings), e.g. NOB_ALLOWED_TESTS=CoroutineResume. Unset means run all.
+    private final static List<String> ALLOWED_TESTS = System.getenv("NOB_ALLOWED_TESTS") == null
+            ? null
+            : Arrays.asList(System.getenv("NOB_ALLOWED_TESTS").split(","));
 
     private static boolean testAllowed(Path testPath) {
         //noinspection ConstantValue
