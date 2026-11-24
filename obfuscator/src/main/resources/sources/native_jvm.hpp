@@ -23,6 +23,15 @@
 #include <mutex>
 #include <initializer_list>
 
+// Diagnostic logging for the opt-in coroutine tracer (-Dnob.trace.label).
+// Native stderr is discarded on Android, so route through logcat there.
+#if defined(__ANDROID__)
+#include <android/log.h>
+#define NOB_TRACE(...) __android_log_print(ANDROID_LOG_ERROR, "nob", __VA_ARGS__)
+#else
+#define NOB_TRACE(...) std::fprintf(stderr, __VA_ARGS__)
+#endif
+
 #ifndef NATIVE_JVM_HPP_GUARD
 
 #define NATIVE_JVM_HPP_GUARD
