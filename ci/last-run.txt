@@ -1,0 +1,68 @@
+run: 45432042295
+sha: 4d3e8907eda71cdcd2f568b03100bf2be07bea72
+
+== TEST-by.radioegor146.KotlinCoroutineTest.xml
+<testsuite name="by.radioegor146.KotlinCoroutineTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-24T16:01:26.923Z" hostname="runnervm0hi8g" time="8.161">
+  <system-out><![CDATA[--- plain JVM ---
+one=42
+two=two:x
+three=three:two:x/y
+done
+
+16:01:28 INFO  NativeObfuscator:146  | Processing /tmp/nob-kotlin-coro-3918848638660364580/input.jar...
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$main$1
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$one$1
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$one$2
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$three$1
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$three$b$1
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$two$1
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep$two$inner$1
+16:01:28 INFO  NativeObfuscator:203  | Skipping Rep
+16:01:28 INFO  NativeObfuscator:400  | Jar file ready!
+--- transpiled ---
+one=42
+two=two:x
+three=three:two:x/y
+done
+
+]]></system-out>
+
+== TEST-by.radioegor146.TestsGenerator.xml
+<testsuite name="by.radioegor146.TestsGenerator" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-11-24T16:01:26.955Z" hostname="runnervm0hi8g" time="11.441">
+  <system-out><![CDATA[Preparing...
+Compiling...
+Copying resources
+Ideal...
+Took 77ms
+Processing platform HOTSPOT...
+16:01:28 INFO  NativeObfuscator:146  | Processing /tmp/native-obfuscator-test-CoroutineResume-6682770427439252349/test.jar...
+16:01:28 INFO  NativeObfuscator:203  | Skipping Test$Cont
+16:01:28 INFO  NativeObfuscator:203  | Skipping Test
+16:01:28 INFO  NativeObfuscator:400  | Jar file ready!
+Compiling CPP code...
+Took 2367ms
+Running test...
+Took 73ms
+OK
+Processing platform STD_JAVA...
+16:01:35 INFO  NativeObfuscator:146  | Processing /tmp/native-obfuscator-test-CoroutineResume-6682770427439252349/test.jar...
+16:01:35 INFO  NativeObfuscator:203  | Skipping Test$Cont
+16:01:35 INFO  NativeObfuscator:203  | Skipping Test
+16:01:35 INFO  NativeObfuscator:400  | Jar file ready!
+Compiling CPP code...
+Took 804ms
+Running test...
+Took 61ms
+OK
+Processing platform ANDROID...
+16:01:37 INFO  NativeObfuscator:146  | Processing /tmp/native-obfuscator-test-CoroutineResume-6682770427439252349/test.jar...
+16:01:37 INFO  NativeObfuscator:203  | Skipping Test$Cont
+16:01:37 INFO  NativeObfuscator:203  | Skipping Test
+16:01:37 INFO  NativeObfuscator:400  | Jar file ready!
+Compiling CPP code...
+Took 810ms
+Running test...
+Took 65ms
+OK
+]]></system-out>
+
